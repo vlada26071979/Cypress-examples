@@ -11,18 +11,24 @@ jobs:
       fail-fast: false
       matrix:
         browsers: [chrome, firefox, edge]
+
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+
+      - name: Install dependencies
+        run: |
+          npm install
+          npm install mochawesome mochawesome-merge mochawesome-report-generator --save-dev
 
       - name: Cypress run in ${{ matrix.browsers }}
         uses: cypress-io/github-action@v6
         with:
           browser: ${{ matrix.browsers }}
-          command: npx cypress run --browser ${{ matrix.browsers }} --reporter-options reportDir=cypress/reports/${{ matrix.browsers }}
+          command: npx cypress run --browser ${{ matrix.browsers }} --reporter mochawesome --reporter-options reportDir=cypress/reports/${{ matrix.browsers }}
 
       - name: Merge Mochawesome Reports
-        run: npx mochawesome-merge cypress/reports/${{ matrix.browsers }}*.json > cypress/reports/${{ matrix.browsers }}/merged-reports.json
+        run: npx mochawesome-merge cypress/reports/${{ matrix.browsers }}/*.json > cypress/reports/${{ matrix.browsers }}/merged-reports.json
 
       - name: Generate HTML Reports
         run: npx marge cypress/reports/${{ matrix.browsers }}/merged-reports.json --reportDir cypress/reports/${{ matrix.browsers }} -f "${{ matrix.browsers }}-report.html"
