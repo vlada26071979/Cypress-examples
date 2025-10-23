@@ -9,7 +9,7 @@ module.exports = defineConfig({
   reporter: 'mochawesome',
   reporterOptions: {
     overwrite: false,
-    html: false,
+    html: true,
     json: true,
   },
 })
