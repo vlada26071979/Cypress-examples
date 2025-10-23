@@ -15,17 +15,15 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Install dependencies
-        run: |
-          npm install
-          npm install mochawesome --save-dev
+        run: npm install
 
-      - name: Cypress run in ${{ matrix.browsers }}
+      - name: Run Cypress tests
         uses: cypress-io/github-action@v6
         with:
           browser: ${{ matrix.browsers }}
-          command: npx cypress run --browser ${{ matrix.browsers }}
 
       - name: Upload HTML Reports
+        if: always()
         uses: actions/upload-artifact@v4
         with:
           name: Cypress HTML Reports ${{ matrix.browsers }}
