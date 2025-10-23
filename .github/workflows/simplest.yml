@@ -16,7 +16,7 @@ jobs:
         uses: cypress-io/github-action@v6
         with:
           browser: chrome
-          command: npx cypress run --spec "cypress/e2e/1-getting-started/todo.cy.js" --browser chrome --reporter mochawesome --reporter-options reportDir=cypress/reports
+          command: npx cypress run --spec cypress/e2e/1-getting-started/todo.cy.js --browser chrome --reporter mochawesome --reporter-options reportDir=cypress/reports
 
       - name: Upload HTML Reports
         if: always()
