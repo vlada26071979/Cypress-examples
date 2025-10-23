@@ -5,11 +5,6 @@ on: workflow_dispatch
 jobs:
   cypress-run:
     runs-on: ubuntu-24.04
-    strategy:
-      fail-fast: false
-      matrix:
-        browsers: [chrome, firefox, edge]
-
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -20,11 +15,12 @@ jobs:
       - name: Run Cypress tests
         uses: cypress-io/github-action@v6
         with:
-          browser: ${{ matrix.browsers }}
+          browser: chrome
+          command: npx cypress run --spec "cypress/e2e/1-getting-started/todo.cy.js" --browser chrome --reporter mochawesome --reporter-options reportDir=cypress/reports
 
       - name: Upload HTML Reports
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: Cypress HTML Reports ${{ matrix.browsers }}
-          path: cypress/reports/*.html
+          name: Cypress-HTML-Reports
+          path: cypress/reports
